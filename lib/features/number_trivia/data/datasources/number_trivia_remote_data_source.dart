@@ -18,6 +18,7 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
       baseUrl: 'http://numbersapi.com',
       connectTimeout: const Duration(seconds: 3),
       receiveTimeout: const Duration(seconds: 3),
+      headers: {'Content-Type': 'application/json'},
     );
   }
 
