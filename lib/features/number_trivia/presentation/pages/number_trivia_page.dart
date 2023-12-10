@@ -14,6 +14,7 @@ class NumberTriviaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         title: const Text('Number Trivia'),
       ),
       body: SingleChildScrollView(
@@ -33,7 +34,6 @@ class NumberTriviaPage extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               BlocBuilder<NumberTriviaBloc, NumberTriviaState>(
-                bloc: sl<NumberTriviaBloc>(),
                 builder: (context, state) {
                   if (state is Empty) {
                     return const MessageDisplay(message: 'Start searching!');

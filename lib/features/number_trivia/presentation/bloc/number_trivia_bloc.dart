@@ -26,33 +26,30 @@ class NumberTriviaBloc extends Bloc<NumberTriviaEvent, NumberTriviaState> {
     required this.getRandomNumberTrivia,
     required this.inputConverter,
   }) : super(Empty()) {
-    on<NumberTriviaEvent>((event, emit) async {
-      if (event is GetTriviaForConcreteNumber) {
-        final input =
-            inputConverter.stringToUnsignedInteger(event.numberString);
+    on<GetTriviaForConcreteNumber>((event, emit) async {
+      emit(Loading());
+      final number = int.tryParse(event.numberString);
 
-        input.fold(
-          (_) => emit(const Error(message: INVALID_INPUT_FAILURE_MESSAGE)),
-          (integer) async {
-            emit(Loading());
-            final failureOrTrivia =
-                await getConcreteNumberTrivia(Params(integer));
-            failureOrTrivia.fold(
-              (failure) => emit(Error(message: _mapFailureToString(failure))),
-              (trivia) => emit(Loaded(trivia: trivia)),
-            );
-          },
-        );
+      if (number == null) {
+        emit(const Error(message: INVALID_INPUT_FAILURE_MESSAGE));
+        return;
       }
+      
+      final failureOrTrivia = await getConcreteNumberTrivia(Params(number));
 
-      if (event is GetTriviaForRandomNumber) {
-        emit(Loading());
-        final failureOrTrivia = await getRandomNumberTrivia(NoParams());
-        failureOrTrivia.fold(
-          (failure) => emit(Error(message: _mapFailureToString(failure))),
-          (trivia) => emit(Loaded(trivia: trivia)),
-        );
-      }
+      failureOrTrivia.fold(
+        (failure) => emit(Error(message: _mapFailureToString(failure))),
+        (trivia) => emit(Loaded(trivia: trivia)),
+      );
+    });
+
+    on<GetTriviaForRandomNumber>((event, emit) async {
+      emit(Loading());
+      final failureOrTrivia = await getRandomNumberTrivia(NoParams());
+      failureOrTrivia.fold(
+        (failure) => emit(Error(message: _mapFailureToString(failure))),
+        (trivia) => emit(Loaded(trivia: trivia)),
+      );
     });
   }
 

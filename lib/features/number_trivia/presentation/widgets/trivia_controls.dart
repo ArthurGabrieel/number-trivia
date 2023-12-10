@@ -30,7 +30,6 @@ class _TriviaControlsState extends State<TriviaControls> {
             filled: true,
             fillColor: Colors.grey.shade300,
           ),
-          style: const TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 10),
         Row(
@@ -52,7 +51,7 @@ class _TriviaControlsState extends State<TriviaControls> {
                   backgroundColor: Theme.of(context).colorScheme.secondary,
                   textStyle: const TextStyle(color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: addRandom,
                 child: const Text('Get random trivia'),
               ),
             ),
@@ -64,17 +63,13 @@ class _TriviaControlsState extends State<TriviaControls> {
 
   void addConcrete() {
     if (input != null && input!.isNotEmpty) {
-      BlocProvider.of<NumberTriviaBloc>(context).add(
-        GetTriviaForConcreteNumber(input!),
-      );
+      context.read<NumberTriviaBloc>().add(GetTriviaForConcreteNumber(input!));
       controller.clear();
     }
   }
 
   void addRandom() {
-    BlocProvider.of<NumberTriviaBloc>(context).add(
-      GetTriviaForRandomNumber(),
-    );
+    context.read<NumberTriviaBloc>().add(GetTriviaForRandomNumber());
     controller.clear();
   }
 }

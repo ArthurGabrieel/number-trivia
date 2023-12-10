@@ -24,13 +24,10 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
 
   @override
   Future<NumberTriviaModel> getConcreteNumberTrivia(int number) async {
-    final response = await dio.get(
-      '/$number',
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
+    final response = await dio.get('/$number');
 
     if (response.statusCode == 200) {
-      return NumberTriviaModel.fromJson(json.decode(response.data));
+      return NumberTriviaModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
@@ -38,13 +35,10 @@ class NumberTriviaRemoteDataSourceImpl implements NumberTriviaRemoteDataSource {
 
   @override
   Future<NumberTriviaModel> getRandomNumberTrivia() async {
-    final response = await dio.get(
-      '/random',
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
+    final response = await dio.get('/random');
 
     if (response.statusCode == 200) {
-      return NumberTriviaModel.fromJson(json.decode(response.data));
+      return NumberTriviaModel.fromJson(response.data);
     } else {
       throw ServerException();
     }
